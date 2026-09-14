@@ -83,7 +83,7 @@
   .app{
     position:fixed;
     top:0;
-    bottom:0;
+    bottom:calc(-1 * env(safe-area-inset-bottom, 0px));
     left:50%;
     transform:translateX(-50%);
     width:100%;
