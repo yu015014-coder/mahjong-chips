@@ -525,6 +525,10 @@
     var p = session.players.find(function(pl){return pl.friendId===ME_ID;});
     return p ? (p.end - p.start) : 0;
   }
+  function myName(){
+    var f = state.friends.find(function(x){return x.id===ME_ID;});
+    return f ? f.name : "我";
+  }
   function sessionsSorted(){
     return state.sessions.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
   }
@@ -727,7 +731,7 @@
     var rowsHtml = visible.map(function(s){
       var diff = myDiff(s);
       var cls = diff>0?"sign-win":(diff<0?"sign-loss":"sign-flat");
-      var names = s.players.map(function(p){ return p.friendId===ME_ID ? "我" : p.name; }).join("．");
+      var names = s.players.map(function(p){ return p.name; }).join("．");
       return '<button class="session-row" data-id="'+s.id+'">'+
         '<div class="session-date tabular">'+fmtDateShort(s.date)+'</div>'+
         '<div class="session-mid">'+
@@ -779,7 +783,7 @@
           '<input type="date" id="f-date" value="'+todayStr()+'">'+
         '</label>'+
         '<div class="player-row" style="border-top:none; padding-top:14px;">'+
-          '<div class="name">我</div>'+
+          '<div class="name">'+escapeHtml(myName())+'</div>'+
           '<label class="field">起始<input type="number" inputmode="numeric" id="f-my-start" value="'+state.defaultStart+'"></label>'+
           '<label class="field">結束<input type="number" inputmode="numeric" id="f-my-end" placeholder="輸入結束籌碼"></label>'+
         '</div>'+
@@ -842,7 +846,7 @@
         saveBtn.classList.add("confirm-armed");
         return;
       }
-      var players = [{friendId:ME_ID, name:"我", start:myStartVal, end:myEndVal}];
+      var players = [{friendId:ME_ID, name:myName(), start:myStartVal, end:myEndVal}];
       others4.forEach(function(r){
         var f = state.friends.find(function(x){return x.id===r.id;});
         players.push({friendId:r.id, name: f?f.name:"?", start:r.start, end:r.end});
@@ -1094,7 +1098,15 @@
         var f = state.friends.find(function(x){return x.id===btn.dataset.saveRename;});
         var input = document.getElementById("rename-input");
         var name = input.value.trim();
-        if(name){ f.name = name; saveState(); }
+        if(name){
+          f.name = name;
+          state.sessions.forEach(function(s){
+            s.players.forEach(function(p){
+              if(p.friendId === f.id) p.name = name;
+            });
+          });
+          saveState();
+        }
         renamingFriendId = null;
         renderRoster();
       });
