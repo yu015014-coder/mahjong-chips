@@ -81,9 +81,13 @@
   .tabular{font-variant-numeric:tabular-nums;}
 
   .app{
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
     max-width:480px;
-    margin-inline:auto;
-    height:100dvh;
     display:flex;
     flex-direction:column;
     background:var(--surface);
@@ -97,10 +101,9 @@
     border-bottom:1px solid var(--border);
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-content:flex-end;
     gap:8px;
   }
-  .topbar h1{font-size:1.35rem; font-weight:700; color:var(--ink); letter-spacing:.02em;}
 
   main{
     flex:1;
@@ -256,7 +259,7 @@
   .tab.active svg{stroke-width:2.3;}
 
   @media (min-width:481px){
-    .app{margin-block:20px; height:calc(100dvh - 40px); border:1px solid var(--border); border-radius:20px; overflow:hidden; box-shadow:0 8px 28px var(--shadow);}
+    .app{top:20px; bottom:20px; border:1px solid var(--border); border-radius:20px; overflow:hidden; box-shadow:0 8px 28px var(--shadow);}
   }
 
   .topbar-right{display:flex; align-items:center;}
@@ -267,8 +270,7 @@
   }
   .theme-toggle svg{width:16px; height:16px;}
   .theme-toggle .icon-moon{display:none;}
-  :root[data-theme="dark"] .theme-toggle .icon-sun,
-  :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-sun{display:none;}
+  :root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
   :root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-sun{display:none;}
@@ -280,7 +282,6 @@
 
 <div class="app">
   <header class="topbar">
-    <h1>籌碼戰績</h1>
     <div class="topbar-right">
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切換深色／淺色模式">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.5M19.5 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
