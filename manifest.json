@@ -1,0 +1,16 @@
+{
+  "name": "籌碼戰績",
+  "short_name": "籌碼戰績",
+  "description": "個人麻將籌碼記錄工具，記下每場起始與結束籌碼，自動算出輸贏並畫出趨勢圖。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f8f5",
+  "theme_color": "#16324a",
+  "lang": "zh-Hant",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

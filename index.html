@@ -1,4 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>籌碼戰績</title>
+<meta name="description" content="個人麻將籌碼記錄工具，記下每場起始與結束籌碼，自動算出輸贏並畫出趨勢圖。">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="theme-color" content="#16324a">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="籌碼戰績">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap">
 <style>
@@ -75,12 +93,11 @@
     padding:18px 20px 14px;
     border-bottom:1px solid var(--border);
     display:flex;
-    align-items:baseline;
+    align-items:center;
     justify-content:space-between;
     gap:8px;
   }
   .topbar h1{font-size:1.35rem; font-weight:700; color:var(--ink); letter-spacing:.02em;}
-  .topbar .tagline{font-size:.72rem; color:var(--ink-soft); letter-spacing:.08em;}
 
   main{
     flex:1;
@@ -238,12 +255,35 @@
   @media (min-width:481px){
     .app{margin-block:20px; min-height:calc(100dvh - 40px); border:1px solid var(--border); border-radius:20px; overflow:hidden; box-shadow:0 8px 28px var(--shadow);}
   }
+
+  .topbar-right{display:flex; align-items:center;}
+  .theme-toggle{
+    background:var(--surface); border:1px solid var(--border); border-radius:999px;
+    width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+    color:var(--ink-soft); cursor:pointer; padding:0;
+  }
+  .theme-toggle svg{width:16px; height:16px;}
+  .theme-toggle .icon-moon{display:none;}
+  :root[data-theme="dark"] .theme-toggle .icon-sun,
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-sun{display:none;}
+  :root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-sun{display:none;}
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-moon{display:block;}
+  }
 </style>
+</head>
+<body>
 
 <div class="app">
   <header class="topbar">
     <h1>籌碼戰績</h1>
-    <span class="tagline">台灣麻將．16張</span>
+    <div class="topbar-right">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切換深色／淺色模式">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.5M19.5 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+    </div>
   </header>
   <div id="storage-warning" hidden style="background:var(--loss-tint); color:var(--loss); font-size:.78rem; font-weight:600; padding:9px 16px; text-align:center;">
     ⚠ 這個瀏覽器目前無法儲存資料（可能是隱私瀏覽模式，或封鎖了網站資料/Cookie），剛剛的操作可能沒有真的存下來，請檢查瀏覽器設定。
@@ -1188,8 +1228,33 @@
     document.querySelector('[data-view="home"]').click();
   });
 
+  // ---------- THEME TOGGLE ----------
+  var THEME_KEY = "mj_theme_pref";
+  function effectiveTheme(){
+    var explicit = document.documentElement.getAttribute("data-theme");
+    if(explicit==="light" || explicit==="dark") return explicit;
+    return (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+  }
+  function applyStoredTheme(){
+    try{
+      var saved = localStorage.getItem(THEME_KEY);
+      if(saved==="light" || saved==="dark") document.documentElement.setAttribute("data-theme", saved);
+    }catch(e){}
+  }
+  applyStoredTheme();
+  var themeBtn = document.getElementById("theme-toggle");
+  if(themeBtn){
+    themeBtn.addEventListener("click", function(){
+      var next = effectiveTheme()==="dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try{ localStorage.setItem(THEME_KEY, next); }catch(e){}
+    });
+  }
+
   // ---------- init ----------
   renderStorageWarning();
   showView("home");
 })();
 </script>
+</body>
+</html>
