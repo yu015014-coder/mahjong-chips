@@ -194,8 +194,10 @@
   input[type=text], input[type=number], input[type=date], textarea{
     font-family:inherit; font-size:.95rem; color:var(--ink);
     background:var(--surface); border:1px solid var(--border); border-radius:9px;
-    padding:10px 12px; width:100%;
+    padding:10px 12px; width:100%; box-sizing:border-box;
   }
+  input[type=date]{ text-align:left; }
+  input[type=date]::-webkit-date-and-time-value{ text-align:left; }
   textarea{resize:vertical; min-height:56px;}
   .chip-grid{display:flex; flex-wrap:wrap; gap:8px;}
   .chip-btn{
