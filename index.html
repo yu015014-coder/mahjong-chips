@@ -1277,6 +1277,17 @@
     window.visualViewport.addEventListener("resize", setAppHeight);
   }
 
+  // iOS sometimes leaves the focused field hidden behind the keyboard once
+  // the app shell's height is JS-controlled; force it into view ourselves.
+  document.addEventListener("focusin", function(e){
+    var el = e.target;
+    if(el.matches && el.matches("input, textarea")){
+      setTimeout(function(){
+        el.scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 300);
+    }
+  });
+
   // ---------- init ----------
   renderStorageWarning();
   showView("home");
