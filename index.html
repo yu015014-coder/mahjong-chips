@@ -20,52 +20,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap">
 <style>
+  /* Milk-tea palette matched to the 台數 cards; fixed light by request */
   :root{
-    --ink:#1c201d;
-    --ink-soft:#69706a;
-    --surface:#f7f8f5;
-    --surface-raised:#ffffff;
-    --border:#e2e4dd;
-    --accent:#3b5b74;
-    --accent-strong:#2a4457;
-    --accent-tint:#e4ecf1;
-    --win:#2f7a52;
-    --win-tint:#e1f0e6;
-    --loss:#b3402f;
-    --loss-tint:#fbe4df;
-    --shadow:rgba(28,32,29,.10);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --ink:#e9ebe6;
-      --ink-soft:#9aa196;
-      --surface:#15170f;
-      --surface-raised:#1e2119;
-      --border:#33362c;
-      --accent:#84abc6;
-      --accent-strong:#aecbdf;
-      --accent-tint:#1f2b33;
-      --win:#5fb98a;
-      --win-tint:#173226;
-      --loss:#e2776a;
-      --loss-tint:#3a201b;
-      --shadow:rgba(0,0,0,.5);
-    }
-  }
-  :root[data-theme="dark"]{
-    --ink:#e9ebe6;
-    --ink-soft:#9aa196;
-    --surface:#15170f;
-    --surface-raised:#1e2119;
-    --border:#33362c;
-    --accent:#84abc6;
-    --accent-strong:#aecbdf;
-    --accent-tint:#1f2b33;
-    --win:#5fb98a;
-    --win-tint:#173226;
-    --loss:#e2776a;
-    --loss-tint:#3a201b;
-    --shadow:rgba(0,0,0,.5);
+    --ink:#45403C;
+    --ink-soft:#857A71;
+    --surface:#E6E1DC;
+    --surface-raised:#F2EFEB;
+    --border:#D9D1C9;
+    --accent:#8C7663;
+    --accent-strong:#6E5A4A;
+    --accent-tint:#E8DED4;
+    --win:#2E7A45;
+    --win-tint:#DCEADB;
+    --loss:#B8322C;
+    --loss-tint:#F4DDD8;
+    --shadow:rgba(69,64,60,.10);
+    --mark:#CDBDAE;
+    --tile:#FCFBF8; --tile-edge:#B3AAA1; --tile-shadow:#C4BBB2;
+    --man:#B8322C; --pin:#2F4F8C; --sou:#2E7A45; --wait:#D8AE45;
   }
 
   *{box-sizing:border-box;}
@@ -104,6 +76,7 @@
 
   main{
     flex:1;
+    min-height:0;
     overflow-y:auto;
     padding:16px 16px 24px;
     display:flex;
@@ -181,7 +154,7 @@
     border:none; border-radius:10px; padding:11px 16px; font-size:.9rem; font-weight:600;
     cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px;
   }
-  .btn-primary{background:var(--accent); color:var(--surface-raised);}
+  .btn-primary{background:var(--pop); color:var(--on-pop);}
   .btn-primary:active{background:var(--accent-strong);}
   .btn-secondary{background:var(--accent-tint); color:var(--accent-strong);}
   .btn-danger{background:var(--loss-tint); color:var(--loss);}
@@ -203,7 +176,7 @@
     border:1px solid var(--border); background:var(--surface); color:var(--ink);
     border-radius:999px; padding:8px 14px; font-size:.85rem; cursor:pointer;
   }
-  .chip-btn.selected{background:var(--accent); border-color:var(--accent); color:var(--surface-raised);}
+  .chip-btn.selected{background:var(--pop); border-color:var(--pop); color:var(--on-pop);}
   .chip-btn.locked{background:var(--accent-tint); border-color:var(--accent-tint); color:var(--accent-strong); cursor:default;}
   .chip-btn[disabled]{opacity:.4; cursor:not-allowed;}
   .hint{font-size:.76rem; color:var(--ink-soft);}
@@ -253,14 +226,14 @@
     font-size:.68rem; font-weight:600; cursor:pointer; border-top:2px solid transparent;
   }
   .tab svg{width:21px; height:21px;}
-  .tab.active{color:var(--accent); border-top-color:var(--accent);}
+  .tab.active{color:var(--accent); border-top-color:var(--pop);}
   .tab.active svg{stroke-width:2.3;}
 
   @media (min-width:481px){
     .app{margin-block:20px; height:calc(var(--app-height, 100vh) - 40px); border:1px solid var(--border); border-radius:20px; overflow:hidden; box-shadow:0 8px 28px var(--shadow);}
   }
 
-  .topbar-right{display:flex; align-items:center;}
+  .topbar-right{display:flex; align-items:center; gap:10px;}
   .theme-toggle{
     background:var(--surface); border:1px solid var(--border); border-radius:999px;
     width:30px; height:30px; display:flex; align-items:center; justify-content:center;
@@ -274,6 +247,120 @@
     :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-sun{display:none;}
     :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-toggle .icon-moon{display:block;}
   }
+
+  /* ---- 台數速查 ---- */
+  .ref-head{display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .ref-head h2{font-size:1.25rem; letter-spacing:.1em;}
+  .ref-badge{background:var(--pop); color:var(--on-pop); font-size:.7rem; font-weight:700; padding:3px 10px; border-radius:4px; letter-spacing:.06em;}
+  .ref-sub{color:var(--ink-soft); font-size:.8rem; margin:4px 0 0;}
+  .ref-chips{position:sticky; top:-16px; z-index:3; background:var(--surface); margin:0 -16px; padding:10px 16px; display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; border-bottom:1px solid var(--border);}
+  .ref-chips::-webkit-scrollbar{display:none;}
+  .ref-chips button{flex:none; font-size:.82rem; font-weight:500; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface-raised); color:var(--ink); cursor:pointer;}
+  .ref-chips button.on{background:var(--pop); border-color:var(--pop); color:var(--on-pop);}
+  .ref-sec{scroll-margin-top:52px;}
+  .ref-sec h3{font-family:'Noto Serif TC',serif; font-size:1.1rem; letter-spacing:.08em; padding-bottom:6px; margin:0 0 10px; border-bottom:2px solid var(--border);}
+  .rcard{background:var(--surface-raised); border-radius:14px; padding:14px 16px; display:grid; gap:16px;}
+  .ritem{display:grid; gap:6px; min-width:0;}
+  .ritem + .ritem{border-top:1px dashed var(--border); padding-top:14px;}
+  .ihead{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .rname{font-weight:700; font-size:1rem; background:linear-gradient(transparent 62%,var(--mark) 62%); padding:0 2px;}
+  .rtai{font-family:'Noto Serif TC',serif; font-weight:700; color:var(--accent); font-size:1rem; font-variant-numeric:tabular-nums;}
+  .rnote{font-size:.76rem; color:var(--ink-soft);}
+  .rdesc{margin:0; font-size:.9rem; line-height:1.6;}
+  .rdesc b{color:var(--loss);}
+  .hand{display:flex; flex-wrap:wrap; align-items:center; gap:3px 2px;}
+  .t{width:24px; height:33px; flex:none; background:var(--tile); border:1px solid var(--tile-edge); border-radius:4px; box-shadow:0 2px 0 var(--tile-shadow); display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Noto Serif TC',serif; font-weight:700; line-height:1; color:#2B2622;}
+  .t .n{font-size:.62rem;} .t .s{font-size:.82rem; margin-top:1px;}
+  .t.m .s{color:var(--man);} .t.p .s{color:var(--pin);} .t.so .s{color:var(--sou);}
+  .t.h{font-size:.95rem;} .t.red{color:var(--man);} .t.grn{color:var(--sou);}
+  .t.white::after{content:""; width:13px; height:19px; border:1.5px solid var(--pin); border-radius:2px;}
+  .t.q{background:var(--wait); border-color:var(--wait);}
+  .hgap{width:7px;}
+  .ting{flex:none; width:26px; height:26px; border-radius:50%; background:var(--pop); color:var(--on-pop); font-size:.72rem; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 6px;}
+  .plus{color:var(--ink-soft); font-size:.8rem; margin:0 3px;}
+  .ov-search{width:100%; font:inherit; font-size:16px; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface-raised); color:var(--ink);}
+  .ov{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; margin-top:10px;}
+  .grp{background:var(--surface-raised); border-radius:12px; padding:10px 14px;}
+  .grp h4{margin:0 0 4px; font-size:.76rem; letter-spacing:.12em; color:var(--ink-soft); font-weight:700;}
+  .orow{display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-top:1px solid var(--border); font-size:.9rem;}
+  .orow:first-of-type{border-top:0;}
+  .orow span:last-child{font-variant-numeric:tabular-nums; font-weight:700; white-space:nowrap;}
+  .orow small{display:block; color:var(--ink-soft); font-size:.7rem;}
+  .ov-empty{color:var(--ink-soft); font-size:.85rem; margin-top:10px;}
+  .rtbl{overflow-x:auto;}
+  .rtbl table{border-collapse:collapse; width:100%; font-size:.85rem; font-variant-numeric:tabular-nums;}
+  .rtbl th,.rtbl td{padding:7px 8px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top;}
+  .rtbl th{color:var(--ink-soft); font-weight:700; font-size:.76rem; white-space:nowrap;}
+  .rtbl .c{text-align:center;}
+  .seats{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;}
+  .seat{border:1px solid var(--border); border-radius:10px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .seat b{font-family:'Noto Serif TC',serif; font-size:1.05rem;}
+  .seat .fl{display:flex; gap:3px;} .t.fl{color:var(--man);}
+  .rpill{display:inline-block; font-size:.7rem; font-weight:700; padding:1px 8px; border-radius:999px; border:1px solid var(--accent); color:var(--accent); margin-left:4px; vertical-align:2px;}
+  ul.rq{margin:0; padding-left:1.1em; display:grid; gap:10px; font-size:.9rem;}
+  ul.rq b{display:block;}
+  .ref-foot{color:var(--ink-soft); font-size:.74rem;}
+
+  /* quick sheet on the 新增 page */
+  .sheet{position:fixed; inset:0; z-index:20; display:flex; align-items:flex-end; justify-content:center; background:rgba(69,64,60,.35);}
+  .sheet[hidden]{display:none;}
+  .sheet-panel{width:100%; max-width:480px; max-height:82%; background:var(--surface); border-radius:18px 18px 0 0; display:flex; flex-direction:column; padding:14px max(16px,env(safe-area-inset-left,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-right,0px));}
+  .sheet-top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
+  .sheet-top h2{font-size:1.05rem;}
+  .sheet-body{overflow-y:auto; min-height:0;}
+  .sheet-actions{display:flex; gap:10px; margin-top:10px;}
+  .preview-banner{background:var(--accent-tint); color:var(--accent-strong); font-size:.76rem; font-weight:600; padding:8px 16px; text-align:center;}
+
+:root[data-pal="milk"]{--ink:#45403C;--ink-soft:#857A71;--surface:#E6E1DC;--surface-raised:#F2EFEB;--border:#D9D1C9;--accent:#8C7663;--accent-strong:#6E5A4A;--accent-tint:#E8DED4;--mark:#CDBDAE;}
+:root[data-pal="matcha"]{--ink:#353D32;--ink-soft:#76806F;--surface:#E4E8DE;--surface-raised:#F3F5EF;--border:#D3DACB;--accent:#5F7A4E;--accent-strong:#465C39;--accent-tint:#DEE7D5;--mark:#C3D2B4;}
+:root[data-pal="mist"]{--ink:#343C46;--ink-soft:#727C88;--surface:#E1E6EC;--surface-raised:#F2F5F8;--border:#CED6DF;--accent:#53708E;--accent-strong:#3D566F;--accent-tint:#DAE3EC;--mark:#BCCBDA;}
+:root[data-pal="rose"]{--ink:#453A3B;--ink-soft:#86777A;--surface:#EDE3E2;--surface-raised:#F7F1F0;--border:#E0D1CF;--accent:#9A6A6E;--accent-strong:#7A5054;--accent-tint:#F0DFDF;--mark:#DABFC0;}
+:root[data-pal="g1"]{--ink:#2E2F31;--ink-soft:#5E6063;--surface:#E6E7E8;--surface-raised:#F7F7F7;--border:#D2D3D5;--accent:#55575A;--accent-strong:#3E4043;--accent-tint:#FBF3C4;--mark:#F5DF4D;}
+:root[data-pal="fin"]{--ink:#0F172A;--ink-soft:#475569;--surface:#EEF2F8;--surface-raised:#FFFFFF;--border:#D7DFEC;--accent:#1E40AF;--accent-strong:#1E3A8A;--accent-tint:#DBE4F7;--mark:#B7EBD6;}
+:root[data-pal="diary"]{--ink:#0F172A;--ink-soft:#475569;--surface:#FFFBEB;--surface-raised:#FFFFFF;--border:#F1E8E2;--accent:#92400E;--accent-strong:#7C2D12;--accent-tint:#F8F3F0;--mark:#FBD7A8;}
+:root[data-pal="lux"]{--ink:#1C1917;--ink-soft:#6B6458;--surface:#F6F3EC;--surface-raised:#FFFDF8;--border:#E4DCCB;--accent:#7A5A12;--accent-strong:#5C430C;--accent-tint:#F3E7C6;--mark:#E6CF8E;}
+
+  .top-right{display:flex; align-items:center; gap:10px;}
+  .topbar{align-items:center !important;}
+  .pal-toggle{width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:var(--surface-raised); color:var(--accent); display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .pal-toggle[aria-expanded="true"]{background:var(--pop); color:var(--on-pop); border-color:var(--pop);}
+  .pal-toggle:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .pal-bar[hidden]{display:none;}
+  .pal-bar{display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; padding:8px 16px 10px; background:var(--accent-tint); border-bottom:1px solid var(--border);}
+  .pal-bar::-webkit-scrollbar{display:none;}
+  .pal-sep{flex:none; align-self:center; font-size:.7rem; font-weight:700; color:var(--ink-soft); letter-spacing:.04em; padding-left:6px; border-left:1px solid var(--border);}
+  .pal{flex:none; display:flex; align-items:center; gap:6px; padding:5px 10px 5px 5px; border-radius:999px; border:1px solid var(--border); background:var(--surface-raised); color:var(--ink); font:inherit; font-size:.8rem; font-weight:600; cursor:pointer;}
+  .pal .dot{width:22px; height:22px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,.15);}
+  .pal.on{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent);}
+  .pal:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  :root{--on-accent:#FFFFFF;}
+  @media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--surface:#1F1B18;--surface-raised:#2A2521;--border:#3E3630;--ink:#EEE6DD;--ink-soft:#B3A496;--accent:#C6AD96;--accent-strong:#DCC6B1;--accent-tint:#3A3029;--mark:#5A4B3F;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="milk"]{--surface:#1F1B18;--surface-raised:#2A2521;--border:#3E3630;--ink:#EEE6DD;--ink-soft:#B3A496;--accent:#C6AD96;--accent-strong:#DCC6B1;--accent-tint:#3A3029;--mark:#5A4B3F;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="matcha"]{--surface:#191D17;--surface-raised:#232821;--border:#373E33;--ink:#E6EBE0;--ink-soft:#A3AE9A;--accent:#9CB98A;--accent-strong:#B9D2A9;--accent-tint:#2C3627;--mark:#4B5A40;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="mist"]{--surface:#181C22;--surface-raised:#22272F;--border:#363D48;--ink:#E4E9EF;--ink-soft:#A0AAB6;--accent:#8FADCB;--accent-strong:#B3CAE0;--accent-tint:#26303C;--mark:#3D4C5E;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="rose"]{--surface:#1F1819;--surface-raised:#2B2223;--border:#423436;--ink:#F0E4E4;--ink-soft:#B9A3A5;--accent:#CF9DA1;--accent-strong:#E3BEC1;--accent-tint:#3A2A2C;--mark:#5C4245;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="g1"]{--surface:#232425;--surface-raised:#2F3032;--border:#444648;--ink:#F1F1F1;--ink-soft:#B8BABC;--accent:#F5DF4D;--accent-strong:#F9EA8A;--accent-tint:#3A3720;--mark:#5C5420;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="fin"]{--surface:#0F172A;--surface-raised:#192134;--border:#2A3448;--ink:#FFFFFF;--ink-soft:#94A3B8;--accent:#7FA3F5;--accent-strong:#A9C1F8;--accent-tint:#16213D;--mark:#0D4B39;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="diary"]{--surface:#17120E;--surface-raised:#1E1813;--border:#3A2E24;--ink:#FFFFFF;--ink-soft:#A8A29E;--accent:#E39B5B;--accent-strong:#F2BC8A;--accent-tint:#2C2017;--mark:#5B3410;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  :root:not([data-theme="light"])[data-pal="lux"]{--surface:#0E0E0E;--surface-raised:#1B1B1B;--border:#333333;--ink:#F5F5F5;--ink-soft:#A3A3A3;--accent:#D4AF37;--accent-strong:#E8C964;--accent-tint:#2A2414;--mark:#5E4A1C;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+  }
+:root[data-theme="dark"]{--surface:#1F1B18;--surface-raised:#2A2521;--border:#3E3630;--ink:#EEE6DD;--ink-soft:#B3A496;--accent:#C6AD96;--accent-strong:#DCC6B1;--accent-tint:#3A3029;--mark:#5A4B3F;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="milk"]{--surface:#1F1B18;--surface-raised:#2A2521;--border:#3E3630;--ink:#EEE6DD;--ink-soft:#B3A496;--accent:#C6AD96;--accent-strong:#DCC6B1;--accent-tint:#3A3029;--mark:#5A4B3F;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="matcha"]{--surface:#191D17;--surface-raised:#232821;--border:#373E33;--ink:#E6EBE0;--ink-soft:#A3AE9A;--accent:#9CB98A;--accent-strong:#B9D2A9;--accent-tint:#2C3627;--mark:#4B5A40;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="mist"]{--surface:#181C22;--surface-raised:#22272F;--border:#363D48;--ink:#E4E9EF;--ink-soft:#A0AAB6;--accent:#8FADCB;--accent-strong:#B3CAE0;--accent-tint:#26303C;--mark:#3D4C5E;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="rose"]{--surface:#1F1819;--surface-raised:#2B2223;--border:#423436;--ink:#F0E4E4;--ink-soft:#B9A3A5;--accent:#CF9DA1;--accent-strong:#E3BEC1;--accent-tint:#3A2A2C;--mark:#5C4245;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="g1"]{--surface:#232425;--surface-raised:#2F3032;--border:#444648;--ink:#F1F1F1;--ink-soft:#B8BABC;--accent:#F5DF4D;--accent-strong:#F9EA8A;--accent-tint:#3A3720;--mark:#5C5420;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="fin"]{--surface:#0F172A;--surface-raised:#192134;--border:#2A3448;--ink:#FFFFFF;--ink-soft:#94A3B8;--accent:#7FA3F5;--accent-strong:#A9C1F8;--accent-tint:#16213D;--mark:#0D4B39;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="diary"]{--surface:#17120E;--surface-raised:#1E1813;--border:#3A2E24;--ink:#FFFFFF;--ink-soft:#A8A29E;--accent:#E39B5B;--accent-strong:#F2BC8A;--accent-tint:#2C2017;--mark:#5B3410;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+:root[data-theme="dark"][data-pal="lux"]{--surface:#0E0E0E;--surface-raised:#1B1B1B;--border:#333333;--ink:#F5F5F5;--ink-soft:#A3A3A3;--accent:#D4AF37;--accent-strong:#E8C964;--accent-tint:#2A2414;--mark:#5E4A1C;--win:#5FB98A;--win-tint:#173226;--loss:#E2776A;--loss-tint:#3A201B;--shadow:rgba(0,0,0,.5);--tile:#EDE6DA;--tile-edge:#8F8274;--tile-shadow:#0E0D0C;--on-accent:#1A1714;color-scheme:dark;}
+
+  :root{--pop:var(--accent);--on-pop:var(--on-accent);}
+  :root[data-pal="g1"]{--pop:#F5DF4D;--on-pop:#2B2B2B;}
+  :root[data-pal="lux"]{--pop:#C9A24A;--on-pop:#1A1714;}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"])[data-pal="lux"]{--pop:#D4AF37;--on-pop:#1A1714;}}
+  :root[data-theme="dark"][data-pal="lux"]{--pop:#D4AF37;--on-pop:#1A1714;}
 </style>
 </head>
 <body>
@@ -281,12 +368,14 @@
 <div class="app">
   <header class="topbar">
     <div class="topbar-right">
+      <button class="pal-toggle" type="button" id="pal-toggle" aria-expanded="false" aria-label="換配色"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.8 1.8-1.7 0-1.3-1-1.6-1-2.6 0-.9.7-1.5 1.7-1.5h2.2a3.8 3.8 0 0 0 3.8-3.8C20.5 6.7 16.7 3.5 12 3.5Z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.4" cy="7.4" r="1.1" fill="currentColor" stroke="none"/><circle cx="14.8" cy="7.6" r="1.1" fill="currentColor" stroke="none"/></svg></button>
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切換深色／淺色模式">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.5M19.5 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
       </button>
     </div>
   </header>
+  <div class="pal-bar" id="pal-bar" hidden><button class="pal" type="button" data-k="milk"><span class="dot" style="background:linear-gradient(135deg,#8C7663 50%,#E6E1DC 50%)"></span>奶茶</button><button class="pal" type="button" data-k="matcha"><span class="dot" style="background:linear-gradient(135deg,#5F7A4E 50%,#E4E8DE 50%)"></span>抹茶</button><button class="pal" type="button" data-k="mist"><span class="dot" style="background:linear-gradient(135deg,#53708E 50%,#E1E6EC 50%)"></span>霧藍</button><button class="pal" type="button" data-k="rose"><span class="dot" style="background:linear-gradient(135deg,#9A6A6E 50%,#EDE3E2 50%)"></span>乾燥玫瑰</button><button class="pal" type="button" data-k="g1"><span class="dot" style="background:linear-gradient(135deg,#F5DF4D 50%,#E6E7E8 50%)"></span>灰鵝黃</button><button class="pal" type="button" data-k="fin"><span class="dot" style="background:linear-gradient(135deg,#1E40AF 50%,#EEF2F8 50%)"></span>理財藍</button><button class="pal" type="button" data-k="diary"><span class="dot" style="background:linear-gradient(135deg,#92400E 50%,#FFFBEB 50%)"></span>手帳棕</button><button class="pal" type="button" data-k="lux"><span class="dot" style="background:linear-gradient(135deg,#E6CF8E 50%,#F6F3EC 50%)"></span>精品黑金</button></div>
   <div id="storage-warning" hidden style="background:var(--loss-tint); color:var(--loss); font-size:.78rem; font-weight:600; padding:9px 16px; text-align:center;">
     ⚠ 這個瀏覽器目前無法儲存資料（可能是隱私瀏覽模式，或封鎖了網站資料/Cookie），剛剛的操作可能沒有真的存下來，請檢查瀏覽器設定。
   </div>
@@ -308,6 +397,175 @@
 
     <!-- NEW / EDIT -->
     <section class="view" id="view-new" hidden></section>
+
+    <!-- 台數 -->
+    <section class="view" id="view-ref" hidden>
+      <div class="ref-head">
+        <div><h2>台灣麻將台數</h2><p class="ref-sub">北部台算法 · 各地牌俗不同，開打前先對規則</p></div>
+        <span class="ref-badge">北部台算法</span>
+      </div>
+      <nav class="ref-chips" id="ref-chips"><button type="button" data-go="r-ov">總覽</button><button type="button" data-go="r-basic">牌稱</button><button type="button" data-go="r-pattern">牌型</button><button type="button" data-go="r-tsumo">自摸</button><button type="button" data-go="r-win">胡法</button><button type="button" data-go="r-ankou">暗刻</button><button type="button" data-go="r-suit">一色</button><button type="button" data-go="r-dragon">三元</button><button type="button" data-go="r-wind4">四喜</button><button type="button" data-go="r-flower">花・風</button><button type="button" data-go="r-tenhou">天地人胡</button><button type="button" data-go="r-ligu">哩咕</button><button type="button" data-go="r-faq">爭議</button></nav>
+      <section class="ref-sec" id="r-ov"><h3>總覽</h3>
+        <input id="ov-q" class="ov-search" type="search" placeholder="搜尋，例如：自摸、三元、8台" aria-label="搜尋台數">
+        <div class="ov" id="ov-grid"></div>
+        <p class="ov-empty" id="ov-empty" hidden>找不到符合的項目。</p>
+      </section>
+<section class="ref-sec" id="r-basic"><h3>認識牌稱</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">順子</span><span class="rnote">同花色連續三張</span></div><div class="hand" data-h="2m 3m 4m"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">刻子</span><span class="rnote">三張一樣</span></div><div class="hand" data-h="4s 4s 4s"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">邊張</span><span class="rnote">聽 3 或 7</span></div><div class="hand" data-h="1p 2p"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">眼睛</span><span class="rnote">一對</span></div><div class="hand" data-h="B B"></div></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-pattern"><h3>牌型台</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">門清</span><span class="rtai">1 台</span></div><p class="rdesc">胡牌時沒有吃、碰、明槓。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">獨聽</span><span class="rtai">1 台</span></div><p class="rdesc">只聽一張牌。</p>
+        <div class="ihead"><span class="rnote">中洞</span><div class="hand" data-h="4m ? 6m"></div></div>
+        <div class="ihead"><span class="rnote">邊張（12 聽 3、98 聽 7）</span><div class="hand" data-h="1p 2p ?"></div></div>
+        <div class="ihead"><span class="rnote">單吊（聽眼睛）</span><div class="hand" data-h="8s ?"></div></div>
+      </div>
+      <div class="ritem"><div class="ihead"><span class="rname">平胡</span><span class="rtai">2 台</span></div><p class="rdesc">全是順子加一對眼，無花、無字，且要聽雙頭。自摸不算平胡。</p>
+        <div class="hand" data-h="1p 2p 3p | 4p 5p 6p | 2s 3s 4s | 5s 6s 7s | 2m 3m 4m | 5m 5m | 7m 8m > 6m 9m"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">碰碰胡</span><span class="rtai">4 台</span></div><p class="rdesc">全是刻子或槓，加一對眼。</p>
+        <div class="hand" data-h="4p 4p 4p | 6p 6p 6p | C C C | 8s 8s 8s | W W | 9s 9s > W 9s"></div></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-tsumo"><h3>自摸台</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">自摸</span><span class="rtai">1 台</span></div><p class="rdesc">自己摸到胡的牌。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">門清自摸</span><span class="rtai">3 台</span></div><p class="rdesc">門清狀態下自摸＝自摸 1 + 門清 1 + 不求人 1。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">海底撈月</span><span class="rtai">1 台</span></div><p class="rdesc">摸到最後一張牌自摸。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">槓上開花</span><span class="rtai">1 台</span></div><p class="rdesc">槓牌或補花補到的牌自摸。</p></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-win"><h3>胡牌方式</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">搶槓</span><span class="rtai">1 台</span></div><p class="rdesc">別家把已碰的牌加槓，那張正好是你要胡的。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">不求人</span><span class="rtai">1 台</span></div><p class="rdesc">完全沒吃、碰、槓的狀態下自摸。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">全求人</span><span class="rtai">1 台</span></div><p class="rdesc">手牌全部吃碰槓完，只剩一張由別家放槍胡牌（可另加單吊 1 台）。</p></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-ankou"><h3>暗刻台</h3>
+    <div class="rcard">
+      <p class="rdesc">手牌內自己摸齊的刻子，暗槓也算。</p>
+      <div class="ritem"><div class="ihead"><span class="rname">三暗刻</span><span class="rtai">2 台</span><span class="rnote">三組</span></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">四暗刻</span><span class="rtai">5 台</span><span class="rnote">四組</span></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">五暗刻</span><span class="rtai">8 台</span><span class="rnote">五組</span></div></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-suit"><h3>一色台</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">混一色</span><span class="rtai">4 台</span></div><p class="rdesc">一種花色（萬／筒／條）加字牌。</p>
+        <div class="hand" data-h="1m 2m 3m | 5m 5m 5m | 7m 8m 9m | S S S | N N | 2m 3m > 1m 4m"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">清一色</span><span class="rtai">8 台</span></div><p class="rdesc">全部同一種花色。</p>
+        <div class="hand" data-h="1m 2m 3m | 1m 2m 3m | 5m 5m 5m | 7m 8m 9m | 4m 4m | 7m 8m > 6m 9m"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">字一色</span><span class="rtai">16 台</span><span class="rnote">亦有場計 8 台</span></div><p class="rdesc">全部字牌。四喜、三元可另疊加；碰碰胡是否加計自行約定（一說 16 台已內含）。</p>
+        <div class="hand" data-h="E E E | S S S | W W W | N N N | C C | F F > C F"></div></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-dragon"><h3>三元台</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">三元刻</span><span class="rtai">1 台</span><span class="rnote">中、發、白任一組刻子，每組 1 台</span></div>
+        <div class="hand" data-h="C C C | F F F | B B B"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">小三元</span><span class="rtai">4 台</span><span class="rnote">兩組刻子 + 第三種一對眼</span></div>
+        <div class="hand" data-h="C C C + F F F + B B"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">大三元</span><span class="rtai">8 台</span><span class="rnote">三組刻子都有</span></div>
+        <div class="hand" data-h="C C C + F F F + B B B"></div></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-wind4"><h3>四喜台</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">小四喜</span><span class="rtai">8 台</span><span class="rnote">三組風刻 + 第四種一對眼</span></div>
+        <div class="hand" data-h="E E E + W W W + N N N + S S"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">大四喜</span><span class="rtai">16 台</span><span class="rnote">四組風刻都有</span></div>
+        <div class="hand" data-h="E E E + S S S + W W W + N N N"></div></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-flower"><h3>花台・風刻台</h3>
+    <div class="rcard">
+      <div class="ritem"><div class="ihead"><span class="rname">正花</span><span class="rtai">1 台</span></div><p class="rdesc">拿到自己座位號的花，每張 1 台。</p>
+        <div class="seats">
+          <div class="seat"><b>東 1</b><div class="fl"><span class="t fl h">春</span><span class="t fl h">梅</span></div></div>
+          <div class="seat"><b>南 2</b><div class="fl"><span class="t fl h">夏</span><span class="t fl h">蘭</span></div></div>
+          <div class="seat"><b>西 3</b><div class="fl"><span class="t fl h">秋</span><span class="t fl h">菊</span></div></div>
+          <div class="seat"><b>北 4</b><div class="fl"><span class="t fl h">冬</span><span class="t fl h">竹</span></div></div>
+        </div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">花槓</span><span class="rtai">1+N 台</span></div><p class="rdesc">集齊一組（春夏秋冬或梅蘭菊竹），再加上正花張數。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">七搶一</span><span class="rtai">8 台</span></div><p class="rdesc">手上七張花，別家摸到第八張時胡。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">八仙過海</span><span class="rtai">8 台</span></div><p class="rdesc">集齊八張花。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">風位牌</span><span class="rtai">1 台</span><span class="rpill">有花</span></div><p class="rdesc">風刻與自己座位相同。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">風圈牌</span><span class="rtai">1 台</span><span class="rpill">有花</span></div><p class="rdesc">風刻與當局風圈相同。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">見風有台</span><span class="rtai">1 台</span><span class="rpill">無花</span></div><p class="rdesc">任一組風刻即算。</p></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-tenhou"><h3>天地人胡</h3>
+    <div class="rcard">
+      <p class="rdesc">現行普遍玩 <b>Migi 8 台</b>，取代天地人胡與天地聽；也有場保留天胡或天聽。以下皆不能有人吃、碰、槓。</p>
+      <div class="ritem"><div class="ihead"><span class="rname">天胡</span><span class="rnote">限莊家</span></div><p class="rdesc">起手牌即自摸。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">地胡</span><span class="rnote">限閒家</span></div><p class="rdesc">摸第一張即自摸。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">人胡</span><span class="rnote">限閒家，亦有場不限</span></div><p class="rdesc">第一巡內胡別人的牌。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">天聽</span><span class="rnote">限莊／限閒／不限，各場不同</span></div><p class="rdesc">起手牌（補完花）即聽牌。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">地聽</span><span class="rnote">不限莊閒</span></div><p class="rdesc">摸第一張牌即聽牌；莊家第 5 手第一次摸牌就聽也算。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">Migi（咪機）</span><span class="rtai">8 台</span></div><p class="rdesc">捨完牌海底 8 張內即聽牌，不限莊閒；也有規定 4 張，少數玩 5 或 9 張。</p></div>
+      <div class="ritem"><div class="ihead"><span class="rname">各場台數</span></div>
+        <div class="rtbl"><table>
+          <thead><tr><th>來源</th><th class="c">天胡</th><th class="c">人胡</th><th class="c">地胡</th><th class="c">天聽</th><th class="c">地聽</th></tr></thead>
+          <tbody>
+            <tr><td>麻將網 A</td><td class="c">24</td><td class="c">16</td><td class="c">16</td><td class="c">16</td><td class="c">8</td></tr>
+            <tr><td>麻將網 B</td><td class="c">24</td><td class="c">16</td><td class="c">16</td><td class="c">8</td><td class="c">4</td></tr>
+            <tr><td>實戰 A</td><td class="c">32</td><td class="c">24</td><td class="c">24</td><td class="c">16</td><td class="c">8</td></tr>
+            <tr><td>實戰 B</td><td class="c">32</td><td class="c">16</td><td class="c">16</td><td class="c">16</td><td class="c">8</td></tr>
+          </tbody></table></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">不加計的台</span></div>
+        <div class="rtbl"><table>
+          <thead><tr><th>牌</th><th>不加計</th><th>自摸</th></tr></thead>
+          <tbody>
+            <tr><td>天胡</td><td>門清、自摸、不求人、天地聽、槓上開花</td><td>天胡即自摸</td></tr>
+            <tr><td>人胡</td><td>門清、自摸、不求人、天地聽</td><td>胡人，沒有自摸</td></tr>
+            <tr><td>地胡</td><td>門清、天地聽</td><td>地胡即自摸</td></tr>
+            <tr><td>天聽</td><td>門清</td><td>多 1 台（不算門清一摸 3）</td></tr>
+            <tr><td>地聽</td><td>門清</td><td>多 1 台（不算門清一摸 3）</td></tr>
+            <tr><td>Migi</td><td>門清（必定門清）</td><td>多 1 台，其餘可疊加</td></tr>
+          </tbody></table></div></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-ligu"><h3>哩咕哩咕 <span class="rpill">8 台・普遍沒玩</span></h3>
+    <div class="rcard">
+      <p class="rdesc">非台灣麻將正式牌型，須門清，有三種：</p>
+      <div class="ritem"><div class="ihead"><span class="rname">8 對</span><span class="rnote">聽 8 張</span></div>
+        <div class="hand" data-h="1p 1p | 2p 2p | 6p 6p | 4s 4s | 8s 8s | 2m 2m | 9m 9m | W W"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">1 刻 6 對 1 單吊</span><span class="rnote">聽單吊張</span></div>
+        <div class="hand" data-h="4p 4p 4p | 1s 1s | 3s 3s | 7s 7s | 1m 1m | 4m 4m | 8m 8m | C"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">5 對 2 刻</span><span class="rnote">聽 2 刻張</span></div>
+        <div class="hand" data-h="2p 2p | 5p 5p | 4s 4s | 6s 6s | 3m 3m | 6m 6m 6m | E E E"></div></div>
+      <div class="ritem"><div class="ihead"><span class="rname">河底撈魚</span><span class="rtai">1 台</span><span class="rnote">普遍沒玩</span></div><p class="rdesc">最後一張牌放槍胡。</p></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="r-faq"><h3>常見爭議</h3>
+    <div class="rcard">
+      <ul class="rq">
+        <li><b>門清給不給算平胡？</b>有給也有不給，4 人協議或場主定奪。</li>
+        <li><b>搶槓給不給算平胡？</b>同上。</li>
+        <li><b>五暗刻自摸算不算門清一摸 3 台？</b>普遍有算。也有人主張五暗刻必定門清（同 Migi），只加自摸 1 台；或給自摸 1 + 不求人 1 = 2 台。</li>
+      </ul>
+    </div>
+  </section>
+
+        <p class="ref-foot">整理自 Hank_mj.rule 圖卡（參考中華麻將網、麻將大師賽事及 FB、PTT 各地場規）。</p>
+    </section>
 
     <!-- ROSTER -->
     <section class="view" id="view-roster" hidden>
@@ -382,6 +640,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/></svg>
       新增
     </button>
+    <button class="tab" data-view="ref">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3.5" width="12" height="17" rx="2"/><path d="M9.5 9h5M12 9v7M9.5 13h5"/></svg>
+      台數
+    </button>
     <button class="tab" data-view="roster">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="7" x2="19" y2="7"/><line x1="5" y1="12" x2="19" y2="12"/><line x1="5" y1="17" x2="13" y2="17"/></svg>
       名單
@@ -391,7 +653,16 @@
       備份
     </button>
   </nav>
+  <div class="sheet" id="ref-sheet" hidden>
+    <div class="sheet-panel" role="dialog" aria-label="台數速查">
+      <div class="sheet-top"><h2>台數速查</h2><button class="btn btn-ghost" type="button" id="sheet-close">關閉</button></div>
+      <input id="sheet-q" class="ov-search" type="search" placeholder="搜尋，例如：自摸、三元、8台" aria-label="搜尋台數">
+      <div class="sheet-body"><div class="ov" id="sheet-grid"></div><p class="ov-empty" id="sheet-empty" hidden>找不到符合的項目。</p></div>
+      <div class="sheet-actions"><button class="btn btn-secondary btn-block" type="button" id="sheet-full">看完整說明與牌例</button></div>
+    </div>
+  </div>
 </div>
+
 
 <script>
 (function(){
@@ -554,7 +825,8 @@
     home: document.getElementById("view-home"),
     new: document.getElementById("view-new"),
     roster: document.getElementById("view-roster"),
-    backup: document.getElementById("view-backup")
+    backup: document.getElementById("view-backup"),
+    ref: document.getElementById("view-ref")
   };
   var tabs = document.querySelectorAll(".tab");
   var editingId = null; // when set, "new" view is in edit mode
@@ -565,6 +837,9 @@
     if(name==="home") renderHome();
     if(name==="roster") renderRoster();
     if(name==="backup") renderBackup();
+    if(window.__applyPal) window.__applyPal(state.palette);
+    if(name==="ref") refEnter();
+    document.querySelector("main").scrollTop = 0;
     if(name==="new" && editingId===null) renderNewForm();
   }
   tabs.forEach(function(t){
@@ -655,14 +930,12 @@
     var areaPath = "M"+mapX(points[0].x)+","+zeroY+" L"+linePts.join(" L")+" L"+mapX(points[points.length-1].x)+","+zeroY+" Z";
 
     var lastVal = points[points.length-1].y;
-    var endColor = lastVal>0 ? "var(--win)" : (lastVal<0 ? "var(--loss)" : "var(--ink-soft)");
+    var endColor = "var(--accent)";
 
     var svg =
       '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="我的累計輸贏趨勢圖">'+
       '<clipPath id="clipAbove"><rect x="'+plotL+'" y="'+plotT+'" width="'+(plotR-plotL)+'" height="'+Math.max(0,(zeroY-plotT))+'"/></clipPath>'+
       '<clipPath id="clipBelow"><rect x="'+plotL+'" y="'+zeroY+'" width="'+(plotR-plotL)+'" height="'+Math.max(0,(plotB-zeroY))+'"/></clipPath>'+
-      '<path d="'+areaPath+'" fill="var(--win-tint)" clip-path="url(#clipAbove)"/>'+
-      '<path d="'+areaPath+'" fill="var(--loss-tint)" clip-path="url(#clipBelow)"/>'+
       '<line x1="'+plotL+'" y1="'+zeroY+'" x2="'+plotR+'" y2="'+zeroY+'" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3"/>'+
       '<text class="chart-axis-label" x="'+(plotL-4)+'" y="'+(zeroY+2)+'" text-anchor="end">0</text>'+
       '<path d="'+linePath+'" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
@@ -789,6 +1062,7 @@
         '</div>'+
         '<div class="hero-sub tabular" id="my-diff-preview"></div>'+
       '</div>'+
+      '<button class="btn btn-ghost btn-block" type="button" id="open-ref-sheet">查台數</button>'+
       '<div class="card">'+
         '<button class="btn btn-secondary btn-block" type="button" id="toggle-others-btn">+ 加入其他玩家（選填，可做零和驗證）</button>'+
         '<div id="others-section" hidden style="margin-top:14px;"></div>'+
@@ -825,6 +1099,7 @@
     myStart.addEventListener("input", refreshPreviewAndSave);
     myEnd.addEventListener("input", refreshPreviewAndSave);
 
+    document.getElementById("open-ref-sheet").addEventListener("click", openSheet);
     document.getElementById("toggle-others-btn").addEventListener("click", function(){
       othersEnabled = !othersEnabled;
       var section = document.getElementById("others-section");
@@ -1287,6 +1562,130 @@
       }, 300);
     }
   });
+
+
+  // ---------- 台數速查 ----------
+  var NUM="一二三四五六七八九";
+  var HONOR={E:"東",S:"南",W:"西",N:"北",C:"中",F:"發",B:""};
+  function makeTile(c){
+    var el=document.createElement("span"); el.className="t";
+    if(c==="?"){ el.className+=" q"; el.setAttribute("aria-label","聽的牌"); return el; }
+    var m=c.match(/^([1-9])([mps])$/);
+    if(m){
+      var suit={m:["m","萬"],p:["p","筒"],s:["so","條"]}[m[2]];
+      el.className+=" "+suit[0];
+      el.innerHTML='<span class="n">'+NUM[m[1]-1]+'</span><span class="s">'+suit[1]+'</span>';
+      el.setAttribute("aria-label",NUM[m[1]-1]+suit[1]); return el;
+    }
+    el.className+=" h";
+    if(c==="B"){ el.className+=" white"; el.setAttribute("aria-label","白"); return el; }
+    if(c==="C") el.className+=" red";
+    if(c==="F") el.className+=" grn";
+    el.textContent=HONOR[c]; return el;
+  }
+  document.querySelectorAll("#view-ref .hand[data-h]").forEach(function(h){
+    h.getAttribute("data-h").split(/\s+/).forEach(function(c){
+      var x;
+      if(c==="|"){ x=document.createElement("span"); x.className="hgap"; }
+      else if(c===">"){ x=document.createElement("span"); x.className="ting"; x.textContent="聽"; }
+      else if(c==="+"){ x=document.createElement("span"); x.className="plus"; x.textContent="+"; }
+      else x=makeTile(c);
+      h.appendChild(x);
+    });
+  });
+
+  var OVERVIEW=[
+    ["莊台",[["莊家","1"],["連莊（連 n）","n×2+1","連一 3、連二 5、連三 7"]]],
+    ["牌型台",[["門清","1"],["獨聽","1","中洞、邊張、單吊"],["平胡","2"],["碰碰胡","4"]]],
+    ["自摸台",[["自摸","1"],["門清自摸","3","門清＋自摸＋不求人"],["海底撈月","1"],["槓上開花","1"]]],
+    ["胡牌方式",[["全求人","1"],["搶槓","1"],["不求人","1"]]],
+    ["暗刻台",[["三暗刻","2"],["四暗刻","5"],["五暗刻","8"]]],
+    ["一色台",[["混一色","4"],["清一色","8"],["字一色","16","亦有場計 8"]]],
+    ["三元台",[["三元刻","1","每組"],["小三元","4"],["大三元","8"]]],
+    ["四喜台",[["小四喜","8"],["大四喜","16"]]],
+    ["花台",[["正花","1","每張"],["花槓","1+N"],["七搶一","8"],["八仙過海","8"]]],
+    ["風刻台",[["風位牌","1","有花"],["風圈牌","1","有花"],["見風有台","1","無花"]]],
+    ["天地人胡",[["天胡","24","各場 16–32"],["地胡","16","各場 16–24"],["人胡","16","各場 16–24"],["天聽","8","各場 8–16"],["地聽","4","各場 4–8"],["Migi","8","現行普遍玩法"]]],
+    ["特殊牌（普遍沒玩）",[["哩咕哩咕","8"],["河底撈魚","1","最後一張放槍"]]]
+  ];
+  function renderOverview(grid, emptyEl, q){
+    grid.innerHTML=""; var n=0; q=(q||"").trim().replace(/台$/,"");
+    OVERVIEW.forEach(function(g){
+      var rows=g[1].filter(function(r){ return !q || g[0].indexOf(q)>-1 || r.join(" ").indexOf(q)>-1; });
+      if(!rows.length) return; n++;
+      var d=document.createElement("div"); d.className="grp";
+      var h=document.createElement("h4"); h.textContent=g[0]; d.appendChild(h);
+      rows.forEach(function(r){
+        var row=document.createElement("div"); row.className="orow";
+        var a=document.createElement("span"); a.textContent=r[0];
+        if(r[2]){ var s=document.createElement("small"); s.textContent=r[2]; a.appendChild(s); }
+        var b=document.createElement("span"); b.textContent=r[1]+" 台";
+        row.appendChild(a); row.appendChild(b); d.appendChild(row);
+      });
+      grid.appendChild(d);
+    });
+    emptyEl.hidden = n>0;
+  }
+  var ovGrid=document.getElementById("ov-grid"), ovEmpty=document.getElementById("ov-empty");
+  renderOverview(ovGrid, ovEmpty, "");
+  document.getElementById("ov-q").addEventListener("input", function(e){ renderOverview(ovGrid, ovEmpty, e.target.value); });
+
+  var mainEl=document.querySelector("main");
+  var chipBtns=[].slice.call(document.querySelectorAll("#ref-chips button"));
+  chipBtns.forEach(function(b){
+    b.addEventListener("click", function(){
+      var sec=document.getElementById(b.dataset.go);
+      if(sec) sec.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+    });
+  });
+  function markChip(){
+    if(views.ref.hidden) return;
+    var top=mainEl.getBoundingClientRect().top+70, i=0;
+    chipBtns.forEach(function(b,k){
+      var sec=document.getElementById(b.dataset.go);
+      if(sec && sec.getBoundingClientRect().top<=top) i=k;
+    });
+    chipBtns.forEach(function(b,k){ b.classList.toggle("on", k===i); });
+    var on=chipBtns[i], bar=on.parentNode;
+    bar.scrollLeft = on.offsetLeft - bar.clientWidth/2 + on.clientWidth/2;
+  }
+  mainEl.addEventListener("scroll", markChip, {passive:true});
+  function refEnter(){ setTimeout(markChip, 0); }
+
+  var sheet=document.getElementById("ref-sheet");
+  var sheetGrid=document.getElementById("sheet-grid"), sheetEmpty=document.getElementById("sheet-empty"), sheetQ=document.getElementById("sheet-q");
+  function openSheet(){
+    sheetQ.value=""; renderOverview(sheetGrid, sheetEmpty, "");
+    sheet.hidden=false;
+  }
+  function closeSheet(){ sheet.hidden=true; }
+  sheetQ.addEventListener("input", function(){ renderOverview(sheetGrid, sheetEmpty, sheetQ.value); });
+  document.getElementById("sheet-close").addEventListener("click", closeSheet);
+  sheet.addEventListener("click", function(e){ if(e.target===sheet) closeSheet(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && !sheet.hidden) closeSheet(); });
+  document.getElementById("sheet-full").addEventListener("click", function(){
+    closeSheet(); editingId=null; showView("ref");
+  });
+
+
+  (function(){
+    var bar=document.getElementById("pal-bar"), root=document.documentElement;
+    var tog=document.getElementById("pal-toggle");
+    tog.addEventListener("click", function(){
+      bar.hidden=!bar.hidden; tog.setAttribute("aria-expanded", String(!bar.hidden));
+    });
+    function norm(k){ var old={lux1:"lux",lux2:"lux",lux3:"lux",orig:"fin",ink:"g1",goose:"g1",g2:"g1",g3:"g1",felt:"milk",table:"milk"}; if(old[k]) k=old[k]; return bar.querySelector('.pal[data-k="'+k+'"]') ? k : "milk"; }
+    window.__applyPal=function(k){ pick(norm(k||"milk")); };
+    function pick(k){
+      root.setAttribute("data-pal", k);
+      bar.querySelectorAll(".pal").forEach(function(b){ b.classList.toggle("on", b.dataset.k===k); });
+    }
+    bar.addEventListener("click", function(e){
+      var b=e.target.closest(".pal"); if(!b) return;
+      pick(b.dataset.k); state.palette=b.dataset.k; saveState();
+    });
+    pick(norm(state.palette||"milk"));
+  })();
 
   // ---------- init ----------
   renderStorageWarning();
